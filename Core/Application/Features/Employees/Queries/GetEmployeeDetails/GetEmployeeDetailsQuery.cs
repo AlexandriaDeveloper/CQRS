@@ -14,19 +14,19 @@ namespace Application.Features.Employees.Queries.GetEmployeeDetails
 
         public class GetEmployeeDetailsQueryHandler : IRequestHandler<GetEmployeeDetailsQuery, GetEmployeeDetailsDto>
         {
-            private readonly IEmployeeRepository _employeeRepository;
+            private readonly IUOW _uow;
             private readonly IMapper _mapper;
             private readonly IMediator _mediatr;
-            public GetEmployeeDetailsQueryHandler(IEmployeeRepository employeeRepository, IMapper mapper)
+            public GetEmployeeDetailsQueryHandler(IUOW uow, IMapper mapper)
             {
-
+                this._uow = uow;
                 this._mapper = mapper;
-                this._employeeRepository = employeeRepository;
+
 
             }
             public async Task<GetEmployeeDetailsDto> Handle(GetEmployeeDetailsQuery request, CancellationToken cancellationToken)
             {
-                var employee = await this._employeeRepository.GetEmployeeByIdAsync(request.EmployeeId, true);
+                var employee = await this._uow.EmployeeRepository.GetEmployeeByIdAsync(request.EmployeeId, true);
 
                 return _mapper.Map<GetEmployeeDetailsDto>(employee);
             }

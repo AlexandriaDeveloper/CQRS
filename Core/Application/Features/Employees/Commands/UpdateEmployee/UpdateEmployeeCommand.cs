@@ -21,19 +21,21 @@ namespace Application.Features.Employees.Commands.UpdateEmployee
         public class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeCommand, Guid>
         {
             private readonly IMapper _mapper;
-            private readonly IEmployeeRepository _employeeRepository;
 
-            public UpdateEmployeeCommandHandler(IEmployeeRepository employeeRepository, IMapper mapper)
+            private readonly IUOW _uow;
+
+            public UpdateEmployeeCommandHandler(IUOW uow, IMapper mapper)
             {
+                this._uow = uow;
                 this._mapper = mapper;
-                this._employeeRepository = employeeRepository;
+
 
             }
             public async Task<Guid> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
             {
                 Employee employee = _mapper.Map<Employee>(request);
 
-                employee = await _employeeRepository.UpdateAsync(employee);
+                employee = await _uow.EmployeeRepository.UpdateAsync(employee);
                 return employee.Id;
             }
         }

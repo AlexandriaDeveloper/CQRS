@@ -15,7 +15,7 @@ namespace Persistence
         public static IServiceCollection AddPersisitenceServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<EmployeeContext>(x => x.UseSqlServer(configuration.GetConnectionString("Default")));
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            //  services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IEmployeeRepository), typeof(EmployeeRepository));
             services.AddScoped<IUOW, UOW>();
             return services;

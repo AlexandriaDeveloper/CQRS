@@ -13,18 +13,20 @@ namespace Application.Features.Employees.Queries.GetEmployeesList
 
         internal class GetEmployeeListQueryHandler : IRequestHandler<GetEmployeeListQuery, List<GetEmployeeListDto>>
         {
-            private readonly IEmployeeRepository _employeeRepository;
-            private readonly IMapper _mapper;
 
-            public GetEmployeeListQueryHandler(IEmployeeRepository employeeRepository, IMapper mapper)
+            private readonly IMapper _mapper;
+            private readonly IUOW _uow;
+
+            public GetEmployeeListQueryHandler(IUOW uow, IMapper mapper)
             {
+                this._uow = uow;
                 this._mapper = mapper;
-                this._employeeRepository = employeeRepository;
+
 
             }
             public async Task<List<GetEmployeeListDto>> Handle(GetEmployeeListQuery request, CancellationToken cancellationToken)
             {
-                var allEmployees = await _employeeRepository.GetAllEmployeesAsync(true);
+                var allEmployees = await _uow.EmployeeRepository.GetAllEmployeesAsync(true);
                 return _mapper.Map<List<GetEmployeeListDto>>(allEmployees);
             }
         }
