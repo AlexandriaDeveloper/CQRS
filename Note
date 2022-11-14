@@ -1,0 +1,2 @@
+dotnet ef migrations add InitialCreate -s ./Api/Api -c EmployeeContext -p ./Infrastructure/Persistence -o ./Infrastructure/persistence/Data/Migrations
+dotnet ef database update -s ./Api/Api -c EmployeeContext -p ./Infrastructure/Persistence 
